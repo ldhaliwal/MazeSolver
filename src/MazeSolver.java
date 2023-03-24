@@ -29,7 +29,17 @@ public class MazeSolver {
     public ArrayList<MazeCell> getSolution() {
         // TODO: Get the solution from the maze
         // Should be from start to end cells
-        return null;
+        ArrayList<MazeCell> solution = new ArrayList<>();
+
+        MazeCell current = maze.getEndCell();
+
+        while(current != maze.getStartCell()){
+            solution.add(0, current);
+            current = current.getParent();
+        }
+
+        solution.add(0, maze.getStartCell());
+        return solution;
     }
 
     /**
@@ -39,6 +49,8 @@ public class MazeSolver {
     public ArrayList<MazeCell> solveMazeDFS() {
         // TODO: Use DFS to solve the maze
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
+
+
         return null;
     }
 
@@ -49,6 +61,7 @@ public class MazeSolver {
     public ArrayList<MazeCell> solveMazeBFS() {
         // TODO: Use BFS to solve the maze
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
+
         return null;
     }
 
