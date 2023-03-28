@@ -5,6 +5,8 @@
  */
 
 import java.util.ArrayList;
+import java.util.Stack;
+import java.util.Queue;
 
 public class MazeSolver {
     private Maze maze;
@@ -50,9 +52,43 @@ public class MazeSolver {
         // TODO: Use DFS to solve the maze
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
 
+        ArrayList<MazeCell> solution = new ArrayList<>();
+        Stack<MazeCell> toVisit = new Stack<>();
+
+        MazeCell current = maze.getStartCell();
+        ArrayList<MazeCell> neighbors = new ArrayList<>();
+
+        searchNeighbors(current);
 
         return null;
     }
+
+    public void searchNeighbors(MazeCell current){
+        Stack<MazeCell> toVisit = new Stack<>();
+        ArrayList<MazeCell> neighbors = new ArrayList<>();
+
+        current.setExplored(true);
+
+        //N
+        neighbors.add(maze.getCell(current.getRow() - 1, current.getCol()));
+        //E
+        neighbors.add(maze.getCell(current.getRow(), current.getCol() + 1));
+        //S
+        neighbors.add(maze.getCell(current.getRow() + 1, current.getCol()));
+        //W
+        neighbors.add(maze.getCell(current.getRow(), current.getCol() + 1));
+
+        for(int i = 0; i < 4; i++){
+            neighbors.get(i).setParent(current);
+            if(maze.isValidCell(neighbors.get(i).getRow(), neighbors.get(i).getCol())){
+                toVisit.push(neighbors.get(i));
+            }
+        }
+
+        current = toVisit.pop();
+        searchNeighbors(current);
+    }
+
 
     /**
      * Performs a Breadth-First Search to solve the Maze
@@ -61,6 +97,8 @@ public class MazeSolver {
     public ArrayList<MazeCell> solveMazeBFS() {
         // TODO: Use BFS to solve the maze
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
+
+        ArrayList<MazeCell> solution = new ArrayList<>();
 
         return null;
     }
