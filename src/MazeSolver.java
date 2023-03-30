@@ -54,6 +54,7 @@ public class MazeSolver {
 
         MazeCell current = maze.getStartCell();
 
+        //TODO: take in a stack
         searchNeighbors(current);
 
         return getSolution();
@@ -65,6 +66,7 @@ public class MazeSolver {
 
         current.setExplored(true);
 
+        //TODO: get rid of unnecessary checks
         //N
         if(maze.isValidCell(current.getRow() - 1, current.getCol())){
             neighbors.add(maze.getCell(current.getRow() - 1, current.getCol()));
@@ -77,6 +79,7 @@ public class MazeSolver {
         //if(maze.isValidCell(current.getRow() + 1, current.getCol())){
           //  neighbors.add(maze.getCell(current.getRow() + 1, current.getCol()));
         //}
+
         //W
         if(maze.isValidCell(current.getRow(), current.getCol() + 1)){
             neighbors.add(maze.getCell(current.getRow(), current.getCol() + 1));
@@ -85,6 +88,7 @@ public class MazeSolver {
         for(int i = 0; i < neighbors.size(); i++){
             neighbors.get(i).setParent(current);
             if(maze.isValidCell(neighbors.get(i).getRow(), neighbors.get(i).getCol())){
+                //TODO: set to explored
                 toVisit.push(neighbors.get(i));
             }
         }
