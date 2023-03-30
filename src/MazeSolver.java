@@ -52,15 +52,11 @@ public class MazeSolver {
         // TODO: Use DFS to solve the maze
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
 
-        ArrayList<MazeCell> solution = new ArrayList<>();
-        Stack<MazeCell> toVisit = new Stack<>();
-
         MazeCell current = maze.getStartCell();
-        ArrayList<MazeCell> neighbors = new ArrayList<>();
 
         searchNeighbors(current);
 
-        return null;
+        return getSolution();
     }
 
     public void searchNeighbors(MazeCell current){
@@ -70,15 +66,23 @@ public class MazeSolver {
         current.setExplored(true);
 
         //N
-        neighbors.add(maze.getCell(current.getRow() - 1, current.getCol()));
+        if(maze.isValidCell(current.getRow() - 1, current.getCol())){
+            neighbors.add(maze.getCell(current.getRow() - 1, current.getCol()));
+        }
         //E
-        neighbors.add(maze.getCell(current.getRow(), current.getCol() + 1));
+        if(maze.isValidCell(current.getRow(), current.getCol() + 1)){
+            neighbors.add(maze.getCell(current.getRow(), current.getCol() + 1));
+        }
         //S
-        neighbors.add(maze.getCell(current.getRow() + 1, current.getCol()));
+        //if(maze.isValidCell(current.getRow() + 1, current.getCol())){
+          //  neighbors.add(maze.getCell(current.getRow() + 1, current.getCol()));
+        //}
         //W
-        neighbors.add(maze.getCell(current.getRow(), current.getCol() + 1));
+        if(maze.isValidCell(current.getRow(), current.getCol() + 1)){
+            neighbors.add(maze.getCell(current.getRow(), current.getCol() + 1));
+        }
 
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < neighbors.size(); i++){
             neighbors.get(i).setParent(current);
             if(maze.isValidCell(neighbors.get(i).getRow(), neighbors.get(i).getCol())){
                 toVisit.push(neighbors.get(i));
@@ -119,7 +123,7 @@ public class MazeSolver {
         maze.reset();
 
         // Solve the maze using BFS and print the solution
-        sol = ms.solveMazeBFS();
-        maze.printSolution(sol);
+        //sol = ms.solveMazeBFS();
+        //maze.printSolution(sol);
     }
 }
