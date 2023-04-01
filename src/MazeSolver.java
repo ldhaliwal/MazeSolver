@@ -53,48 +53,45 @@ public class MazeSolver {
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
 
         MazeCell current = maze.getStartCell();
+        Stack<MazeCell> toVisit = new Stack<>();
 
         //TODO: take in a stack
-        searchNeighbors(current);
+        searchNeighbors(current, toVisit);
 
         return getSolution();
     }
 
-    public void searchNeighbors(MazeCell current){
-        Stack<MazeCell> toVisit = new Stack<>();
+    public void searchNeighbors(MazeCell current, Stack<MazeCell> toVisit){
         ArrayList<MazeCell> neighbors = new ArrayList<>();
-
         current.setExplored(true);
 
         //TODO: get rid of unnecessary checks
         //N
         if(maze.isValidCell(current.getRow() - 1, current.getCol())){
-            neighbors.add(maze.getCell(current.getRow() - 1, current.getCol()));
+            neighbors.add(0, maze.getCell(current.getRow() - 1, current.getCol()));
         }
         //E
         if(maze.isValidCell(current.getRow(), current.getCol() + 1)){
-            neighbors.add(maze.getCell(current.getRow(), current.getCol() + 1));
+            neighbors.add(0, maze.getCell(current.getRow(), current.getCol() + 1));
         }
         //S
-        //if(maze.isValidCell(current.getRow() + 1, current.getCol())){
-          //  neighbors.add(maze.getCell(current.getRow() + 1, current.getCol()));
-        //}
-
+        if(maze.isValidCell(current.getRow() + 1, current.getCol())){
+            neighbors.add(0, maze.getCell(current.getRow() + 1, current.getCol()));
+        }
         //W
         if(maze.isValidCell(current.getRow(), current.getCol() + 1)){
-            neighbors.add(maze.getCell(current.getRow(), current.getCol() + 1));
+            neighbors.add(0, maze.getCell(current.getRow(), current.getCol() + 1));
         }
 
         for(int i = 0; i < neighbors.size(); i++){
             neighbors.get(i).setParent(current);
-            if(maze.isValidCell(neighbors.get(i).getRow(), neighbors.get(i).getCol())){
-                //TODO: set to explored
-                toVisit.push(neighbors.get(i));
-            }
+            neighbors.get(i).setExplored(true);
+            toVisit.push(neighbors.get(i));
         }
-
-        current = toVisit.pop();
-        searchNeighbors(current);
+        while(!toVisit.isEmpty()){
+            MazeCell nextCell = toVisit.pop();
+            searchNeighbors(nextCell, toVisit);
+        }
     }
 
 
