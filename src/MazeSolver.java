@@ -5,6 +5,7 @@
  */
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Stack;
 import java.util.Queue;
 
@@ -53,45 +54,54 @@ public class MazeSolver {
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
 
         MazeCell current = maze.getStartCell();
+        current.setExplored(true);
         Stack<MazeCell> toVisit = new Stack<>();
+        toVisit.push(current);
 
         //TODO: take in a stack
-        searchNeighbors(current, toVisit);
+        searchNeighborsDFS(toVisit);
 
         return getSolution();
     }
 
-    public void searchNeighbors(MazeCell current, Stack<MazeCell> toVisit){
+    public void searchNeighborsDFS(Stack<MazeCell> toVisit){
+        //if empty: return;
+        if(toVisit.isEmpty()){
+            return;
+        }
+        MazeCell current = toVisit.pop();
+        if(current == maze.getEndCell()){
+            return;
+        }
+
         ArrayList<MazeCell> neighbors = new ArrayList<>();
         current.setExplored(true);
 
-        //TODO: get rid of unnecessary checks
         //N
         if(maze.isValidCell(current.getRow() - 1, current.getCol())){
-            neighbors.add(0, maze.getCell(current.getRow() - 1, current.getCol()));
+            neighbors.add(maze.getCell(current.getRow() - 1, current.getCol()));
         }
         //E
         if(maze.isValidCell(current.getRow(), current.getCol() + 1)){
-            neighbors.add(0, maze.getCell(current.getRow(), current.getCol() + 1));
+            neighbors.add(maze.getCell(current.getRow(), current.getCol() + 1));
         }
         //S
         if(maze.isValidCell(current.getRow() + 1, current.getCol())){
-            neighbors.add(0, maze.getCell(current.getRow() + 1, current.getCol()));
+            neighbors.add(maze.getCell(current.getRow() + 1, current.getCol()));
         }
         //W
         if(maze.isValidCell(current.getRow(), current.getCol() + 1)){
-            neighbors.add(0, maze.getCell(current.getRow(), current.getCol() + 1));
+            neighbors.add(maze.getCell(current.getRow(), current.getCol() + 1));
         }
 
+        // Adds each neighbor to the toVisit Stack
         for(int i = 0; i < neighbors.size(); i++){
             neighbors.get(i).setParent(current);
             neighbors.get(i).setExplored(true);
             toVisit.push(neighbors.get(i));
         }
-        while(!toVisit.isEmpty()){
-            MazeCell nextCell = toVisit.pop();
-            searchNeighbors(nextCell, toVisit);
-        }
+        // Recursively calls itself
+        searchNeighborsDFS(toVisit);
     }
 
 
@@ -102,15 +112,51 @@ public class MazeSolver {
     public ArrayList<MazeCell> solveMazeBFS() {
         // TODO: Use BFS to solve the maze
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
+        MazeCell current = maze.getStartCell();
+        Queue<MazeCell> toVisit = new LinkedList<>();
 
-        ArrayList<MazeCell> solution = new ArrayList<>();
+        //TODO: take in a stack
+        searchNeighborsBFS(current, toVisit);
 
-        return null;
+        return getSolution();
+    }
+
+    public void searchNeighborsBFS(MazeCell current, Queue<MazeCell> toVisit){
+        ArrayList<MazeCell> neighbors = new ArrayList<>();
+        current.setExplored(true);
+
+        //TODO: get rid of unnecessary checks
+        //N
+        if(maze.isValidCell(current.getRow() - 1, current.getCol())){
+            neighbors.add(maze.getCell(current.getRow() - 1, current.getCol()));
+        }
+        //E
+        if(maze.isValidCell(current.getRow(), current.getCol() + 1)){
+            neighbors.add(maze.getCell(current.getRow(), current.getCol() + 1));
+        }
+        //S
+        if(maze.isValidCell(current.getRow() + 1, current.getCol())){
+            neighbors.add(maze.getCell(current.getRow() + 1, current.getCol()));
+        }
+        //W
+        if(maze.isValidCell(current.getRow(), current.getCol() + 1)){
+            neighbors.add(maze.getCell(current.getRow(), current.getCol() + 1));
+        }
+
+        for(int i = 0; i < neighbors.size(); i++){
+            neighbors.get(i).setParent(current);
+            neighbors.get(i).setExplored(true);
+            toVisit.add(neighbors.get(i));
+        }
+        while(!toVisit.isEmpty()){
+            MazeCell nextCell = toVisit.remove();
+            searchNeighborsBFS(nextCell, toVisit);
+        }
     }
 
     public static void main(String[] args) {
         // Create the Maze to be solved
-        Maze maze = new Maze("Resources/maze3.txt");
+        Maze maze = new Maze("Resources/maze2.txt");
 
         // Create the MazeSolver object and give it the maze
         MazeSolver ms = new MazeSolver();
