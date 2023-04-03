@@ -1,6 +1,6 @@
 /**
  * Creates a Maze made up of MazeCells
- * @author Ms. Namasivayam
+ * @author Ms. Namasivayam & Liliana Dhaliwal
  * @version 03/04/2022
  */
 
@@ -146,15 +146,15 @@ public class Maze {
      * @return boolean true/false
      */
     public boolean isValidCell(int row, int col) {
-        //TODO: move row & col checks in front of mazeGrid calls
+        // Checks that all row and col values are withing the bounds of the maze, and returns false if they aren't
         if(row >= numRows || col >= numCols || row < 0 || col < 0){
             return false;
         }
-        else if(row < numRows || col < numCols || row > 0 || col > 0){
-            if (mazeGrid[row][col].isWall() || mazeGrid[row][col].isExplored()) {
-                return false;
-            }
+        // Checks that the given MazeCell is not a wall or has been explored, and returns false if they are/have been
+        if (mazeGrid[row][col].isWall() || mazeGrid[row][col].isExplored()) {
+            return false;
         }
+        // Returns true if all checks are passed
         return true;
     }
 }
